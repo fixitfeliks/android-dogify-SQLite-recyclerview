@@ -1,9 +1,9 @@
-package co.touchlab.dogify.repository.remote.retrofit;
+package co.touchlab.dogify.data.entities;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class NameResult
+public class NamesResult
 {
     public String status;
     public LinkedHashMap<String, List<String>> message;

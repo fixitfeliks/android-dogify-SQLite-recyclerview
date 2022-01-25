@@ -1,4 +1,4 @@
-package co.touchlab.dogify.repository.remote.retrofit;
+package co.touchlab.dogify.data.entities;
 
 public class ImageResult
 {

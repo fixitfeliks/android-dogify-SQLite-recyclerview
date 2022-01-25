@@ -1,4 +1,4 @@
-package co.touchlab.dogify.repository.remote;
+package co.touchlab.dogify.data.retrofit;
 
 import android.os.AsyncTask;
 
@@ -8,9 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import co.touchlab.dogify.repository.remote.retrofit.NameResult;
+import co.touchlab.dogify.data.entities.NamesResult;
 import co.touchlab.dogify.ui.MainActivity;
-import co.touchlab.dogify.repository.remote.retrofit.DogService;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -52,7 +51,7 @@ public class GetBreedsTask extends AsyncTask<Void, Void, List<String>> {
 
     private List<String> getBreedNames(DogService service) {
         try {
-            NameResult result = service.getBreeds().execute().body();
+            NamesResult result = service.getBreeds().execute().body();
             if (result != null && result.message != null) {
                 return new ArrayList<>(result.message.keySet());
             }
