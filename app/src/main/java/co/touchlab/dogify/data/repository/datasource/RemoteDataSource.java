@@ -52,7 +52,7 @@ public class RemoteDataSource implements DataSource {
                     mBreedNamesResult.postValue(namesResult);
                 }
             } else {
-                ApiError apiError = apiErrorUtil.parseError(response);
+                mApiError.postValue(apiErrorUtil.parseError(response));
             }
         } catch (IOException e) {
             e.printStackTrace();
