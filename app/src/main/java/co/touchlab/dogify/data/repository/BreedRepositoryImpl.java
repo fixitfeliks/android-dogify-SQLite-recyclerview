@@ -18,21 +18,19 @@ public class BreedRepositoryImpl implements BreedRepository
     private final MediatorLiveData<List<BreedModel>> mBreedData = new MediatorLiveData<>();
 
     private final ExecutorService mExecutor;
-    private final RemoteDataSource remoteDataSource;
-    private final BreedMapper breedMapper;
+    private final RemoteDataSource mRemoteDataSource;
 
-    public BreedRepositoryImpl(RemoteDataSource remoteDataSource, BreedMapper breedMapper) {
-        this.remoteDataSource = remoteDataSource;
-        this.breedMapper = breedMapper;
+    public BreedRepositoryImpl(RemoteDataSource mRemoteDataSource, BreedMapper mBreedMapper) {
+        this.mRemoteDataSource = mRemoteDataSource;
         mExecutor = Executors.newCachedThreadPool();
 
-        mRepoErrorData.addSource(this.remoteDataSource.getApiErrorStream(), apiError ->
+        mRepoErrorData.addSource(this.mRemoteDataSource.getApiErrorStream(), apiError ->
                 mExecutor.execute(() -> {
-                    mRepoErrorData.postValue(breedMapper.mapErrorEntityToModel(apiError));
+                    mRepoErrorData.postValue(mBreedMapper.mapErrorEntityToModel(apiError));
                 })
         );
 
-        mBreedData.addSource(this.remoteDataSource.getBreedDataStream(), breedModels ->
+        mBreedData.addSource(this.mRemoteDataSource.getBreedDataStream(), breedModels ->
                 mExecutor.execute(() -> {
                         mBreedData.postValue(breedModels);
                 })
@@ -51,6 +49,6 @@ public class BreedRepositoryImpl implements BreedRepository
 
     @Override
     public void fetchBreedData() {
-        remoteDataSource.fetchBreedData();
+        mRemoteDataSource.fetchBreedData();
     }
 }

@@ -12,4 +12,5 @@ import co.touchlab.dogify.data.models.BreedModel;
 public interface DataSource {
     LiveData<List<BreedModel>> getBreedDataStream();
     LiveData<ApiError> getApiErrorStream();
+    void fetchBreedData();
 }

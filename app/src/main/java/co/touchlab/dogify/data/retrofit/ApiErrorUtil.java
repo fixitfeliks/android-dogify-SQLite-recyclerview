@@ -24,7 +24,7 @@ public class ApiErrorUtil {
 
         try {
             error = converter.convert(response.errorBody());
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             return new ApiError();
         }
 
