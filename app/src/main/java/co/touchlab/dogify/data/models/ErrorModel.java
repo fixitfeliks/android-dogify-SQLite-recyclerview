@@ -1,6 +1,5 @@
 package co.touchlab.dogify.data.models;
 
-public class RepoErrorModel {
-    public String status;
+public class ErrorModel {
     public String message;
 }

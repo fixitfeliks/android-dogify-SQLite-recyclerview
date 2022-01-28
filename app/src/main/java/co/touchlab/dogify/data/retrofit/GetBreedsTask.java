@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import co.touchlab.dogify.Constants;
 import co.touchlab.dogify.data.entities.NamesResult;
 import co.touchlab.dogify.ui.MainActivity;
 import okhttp3.OkHttpClient;
@@ -35,7 +36,7 @@ public class GetBreedsTask extends AsyncTask<Void, Void, List<String>> {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://dog.ceo/api/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.DOG_API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();

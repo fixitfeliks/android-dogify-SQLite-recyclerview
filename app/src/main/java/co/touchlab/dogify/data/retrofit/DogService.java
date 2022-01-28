@@ -1,4 +1,5 @@
 package co.touchlab.dogify.data.retrofit;
+import co.touchlab.dogify.Constants;
 import co.touchlab.dogify.data.entities.ImageResult;
 import co.touchlab.dogify.data.entities.NamesResult;
 import retrofit2.Call;
@@ -11,5 +12,5 @@ public interface DogService
     Call<NamesResult> getBreeds();
 
     @GET("breed/{name}/images/random")
-    Call<ImageResult> getImage(@Path("name") String name);
+    Call<ImageResult> getImage(@Path(value = "name", encoded = true) String name);
 }

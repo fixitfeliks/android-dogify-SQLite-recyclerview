@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,8 +13,12 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import co.touchlab.dogify.Constants;
 import co.touchlab.dogify.R;
 import co.touchlab.dogify.adapters.BreedAdapter;
+import co.touchlab.dogify.data.mappers.BreedMapper;
+import co.touchlab.dogify.data.models.BreedModel;
+import co.touchlab.dogify.data.repository.BreedRepositoryImpl;
 import co.touchlab.dogify.data.repository.datasource.RemoteDataSource;
 import co.touchlab.dogify.data.retrofit.DogService;
 import co.touchlab.dogify.data.retrofit.GetBreedsTask;
@@ -39,8 +44,30 @@ public class MainActivity extends AppCompatActivity
         breedList.setLayoutManager(new GridLayoutManager(this, 2));
         breedList.setAdapter(adapter);
         getBreeds.execute();
+
         ExecutorService mExecutor = Executors.newFixedThreadPool(5);
-        mExecutor.execute(() -> testNewDataSource());
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.DOG_API_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+
+        BreedMapper breedMapper = new BreedMapper();
+        RemoteDataSource dataSource = new RemoteDataSource(retrofit, DogService.class);
+        BreedRepositoryImpl breedRepository = new BreedRepositoryImpl(dataSource, breedMapper);
+
+        breedRepository.getBreedDataStream().observe(this, new Observer<List<BreedModel>>() {
+            @Override
+            public void onChanged(List<BreedModel> breedModels) {
+                System.out.println("Ok");
+            }
+        });
+
+        mExecutor.execute(() -> breedRepository.fetchBreedData());
+
     }
 
     @Override
@@ -48,20 +75,6 @@ public class MainActivity extends AppCompatActivity
     {
         getBreeds.cancel(false);
         super.onDestroy();
-    }
-
-    public void testNewDataSource() {
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
-
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://dog.ceo/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
-
-        RemoteDataSource dataSource = new RemoteDataSource(retrofit, DogService.class);
-        dataSource.fetchBreedNames();
     }
 
     public void initList() {

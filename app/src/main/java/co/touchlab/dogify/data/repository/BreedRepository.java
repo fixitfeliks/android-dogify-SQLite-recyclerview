@@ -1,11 +1,14 @@
 package co.touchlab.dogify.data.repository;
 
+import androidx.lifecycle.LiveData;
+
 import java.util.List;
 
 import co.touchlab.dogify.data.models.BreedModel;
-import co.touchlab.dogify.data.models.RepoErrorModel;
+import co.touchlab.dogify.data.models.ErrorModel;
 
 public interface BreedRepository {
-    List<BreedModel> getBreedData();
-    RepoErrorModel getDataAccessError();
+    LiveData<List<BreedModel>> getBreedDataStream();
+    LiveData<ErrorModel> getErrorStream();
+    void fetchBreedData();
 }
