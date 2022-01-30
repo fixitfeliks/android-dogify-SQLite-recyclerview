@@ -9,19 +9,16 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.nio.file.Path;
-import java.util.List;
 
 import co.touchlab.dogify.data.entities.NamesResult;
-import co.touchlab.dogify.data.mappers.BreedMapper;
-import co.touchlab.dogify.data.models.BreedModel;
+import co.touchlab.dogify.data.mappers.BreedMapperImpl;
 
 public class DogifyUnitTests
 {
     private static final String BREED_RESPONSE_FILEPATH =
             new File("src/test/java/co/touchlab/dogify/entities/TestBreedEntity.json").getAbsolutePath();
     Gson gson = new Gson();
-    BreedMapper breedMapper = new BreedMapper();
+    BreedMapperImpl breedMapper = new BreedMapperImpl();
 
     //API
     @Test

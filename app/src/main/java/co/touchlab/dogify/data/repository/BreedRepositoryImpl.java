@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import co.touchlab.dogify.data.mappers.BreedMapper;
+import co.touchlab.dogify.data.mappers.BreedMapperImpl;
 import co.touchlab.dogify.data.models.BreedModel;
 import co.touchlab.dogify.data.models.ErrorModel;
 import co.touchlab.dogify.data.repository.datasource.RemoteDataSource;
@@ -20,11 +20,11 @@ public class BreedRepositoryImpl implements BreedRepository
     private final ExecutorService mExecutor;
     private final RemoteDataSource mRemoteDataSource;
 
-    public BreedRepositoryImpl(RemoteDataSource mRemoteDataSource, BreedMapper mBreedMapper) {
+    public BreedRepositoryImpl(RemoteDataSource mRemoteDataSource, BreedMapperImpl mBreedMapper) {
         this.mRemoteDataSource = mRemoteDataSource;
         mExecutor = Executors.newCachedThreadPool();
 
-        mRepoErrorData.addSource(this.mRemoteDataSource.getApiErrorStream(), apiError ->
+        mRepoErrorData.addSource(this.mRemoteDataSource.getErrorStream(), apiError ->
                 mExecutor.execute(() -> {
                     mRepoErrorData.postValue(mBreedMapper.mapErrorEntityToModel(apiError));
                 })

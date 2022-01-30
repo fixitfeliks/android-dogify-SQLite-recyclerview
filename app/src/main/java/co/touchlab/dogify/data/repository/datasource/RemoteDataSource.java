@@ -15,7 +15,7 @@ import java.util.concurrent.Future;
 import co.touchlab.dogify.data.entities.ApiError;
 import co.touchlab.dogify.data.entities.ImageResult;
 import co.touchlab.dogify.data.entities.NamesResult;
-import co.touchlab.dogify.data.mappers.BreedMapper;
+import co.touchlab.dogify.data.mappers.BreedMapperImpl;
 import co.touchlab.dogify.data.models.BreedModel;
 import co.touchlab.dogify.data.retrofit.ApiErrorUtil;
 import co.touchlab.dogify.data.retrofit.DogService;
@@ -26,13 +26,11 @@ public class RemoteDataSource implements DataSource {
     private final MutableLiveData<ApiError> mApiError = new MutableLiveData<>();
     private final MutableLiveData<List<BreedModel>> mBreedData = new MutableLiveData<>();
 
-    private final Retrofit retrofit;
     private final DogService service;
     private final ApiErrorUtil apiErrorUtil;
-    private final BreedMapper breedMapper = new BreedMapper();
+    private final BreedMapperImpl breedMapper = new BreedMapperImpl();
     
     public RemoteDataSource(Retrofit retrofit, Class<DogService> serviceInterface) {
-        this.retrofit = retrofit;
         this.service = retrofit.create(serviceInterface);
         this.apiErrorUtil = new ApiErrorUtil(retrofit);
     }
@@ -43,7 +41,7 @@ public class RemoteDataSource implements DataSource {
     }
 
     @Override
-    public LiveData<ApiError> getApiErrorStream() {
+    public LiveData<ApiError> getErrorStream() {
         return mApiError;
     }
 
@@ -69,7 +67,7 @@ public class RemoteDataSource implements DataSource {
         List<Future<ImageResult>> futureList = null;
         List<ImageResult> imageResults = new ArrayList<>();
 
-        List<String> imageUrls = breedMapper.getImageUrlCallList(namesResult);
+        List<String> imageUrls = breedMapper.mapImageUrlCallList(namesResult);
         for (String url : imageUrls) {
             callableList.add(() -> fetchOneImageUrl(url));
         }
@@ -92,7 +90,7 @@ public class RemoteDataSource implements DataSource {
             }
         }
 
-        mBreedData.postValue(breedMapper.mapBreedsEntitiesToModel(namesResult, imageResults));
+        mBreedData.postValue(breedMapper.mapBreedEntitiesToModel(namesResult, imageResults));
     }
 
     private ImageResult fetchOneImageUrl(String imageUrl) {

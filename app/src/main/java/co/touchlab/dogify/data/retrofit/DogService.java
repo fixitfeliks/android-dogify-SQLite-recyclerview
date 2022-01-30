@@ -1,5 +1,5 @@
 package co.touchlab.dogify.data.retrofit;
-import co.touchlab.dogify.Constants;
+
 import co.touchlab.dogify.data.entities.ImageResult;
 import co.touchlab.dogify.data.entities.NamesResult;
 import retrofit2.Call;
