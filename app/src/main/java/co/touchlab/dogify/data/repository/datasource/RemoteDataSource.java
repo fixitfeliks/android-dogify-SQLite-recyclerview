@@ -3,6 +3,10 @@ package co.touchlab.dogify.data.repository.datasource;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +16,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import co.touchlab.dogify.data.entities.ApiError;
+import co.touchlab.dogify.data.entities.ErrorResult;
 import co.touchlab.dogify.data.entities.ImageResult;
 import co.touchlab.dogify.data.entities.NamesResult;
 import co.touchlab.dogify.data.mappers.BreedMapperImpl;
@@ -23,13 +27,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class RemoteDataSource implements DataSource {
-    private final MutableLiveData<ApiError> mApiError = new MutableLiveData<>();
+    private final MutableLiveData<ErrorResult> mApiError = new MutableLiveData<>();
     private final MutableLiveData<List<BreedModel>> mBreedData = new MutableLiveData<>();
 
     private final DogService service;
     private final ApiErrorUtil apiErrorUtil;
     private final BreedMapperImpl breedMapper = new BreedMapperImpl();
-    
+
     public RemoteDataSource(Retrofit retrofit, Class<DogService> serviceInterface) {
         this.service = retrofit.create(serviceInterface);
         this.apiErrorUtil = new ApiErrorUtil(retrofit);
@@ -41,7 +45,7 @@ public class RemoteDataSource implements DataSource {
     }
 
     @Override
-    public LiveData<ApiError> getErrorStream() {
+    public LiveData<ErrorResult> getErrorStream() {
         return mApiError;
     }
 
@@ -56,12 +60,16 @@ public class RemoteDataSource implements DataSource {
             } else {
                 mApiError.postValue(apiErrorUtil.parseError(response));
             }
-        } catch (IOException e) {
+        } catch (IOException | JsonSyntaxException e) {
             e.printStackTrace();
+            ErrorResult errorResult = new ErrorResult();
+            errorResult.status = "500";
+            errorResult.message = "Error getting data from server";
+            mApiError.postValue(errorResult);
         }
     }
 
-    public void fetchAllImageUrls(NamesResult namesResult) {
+    private void fetchAllImageUrls(NamesResult namesResult) {
         ExecutorService executorService = Executors.newCachedThreadPool();
         List<Callable<ImageResult>> callableList = new ArrayList<>();
         List<Future<ImageResult>> futureList = null;
@@ -90,7 +98,8 @@ public class RemoteDataSource implements DataSource {
             }
         }
 
-        mBreedData.postValue(breedMapper.mapBreedEntitiesToModel(namesResult, imageResults));
+        List<BreedModel> breedModels = breedMapper.mapBreedEntitiesToModel(namesResult, imageResults);
+        mBreedData.postValue(breedModels);
     }
 
     private ImageResult fetchOneImageUrl(String imageUrl) {

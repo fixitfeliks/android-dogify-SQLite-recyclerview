@@ -6,9 +6,8 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.jar.Attributes;
 
-import co.touchlab.dogify.data.entities.ApiError;
+import co.touchlab.dogify.data.entities.ErrorResult;
 import co.touchlab.dogify.data.entities.ImageResult;
 import co.touchlab.dogify.data.entities.NamesResult;
 import co.touchlab.dogify.data.models.BreedModel;
@@ -17,10 +16,10 @@ import co.touchlab.dogify.data.models.ErrorModel;
 public class BreedMapperImpl implements BreedMapper
 {
     @Override
-    public ErrorModel mapErrorEntityToModel(ApiError apiError) {
+    public ErrorModel mapErrorEntityToModel(ErrorResult errorResult) {
         ErrorModel repoErrorModel = new ErrorModel();
-        repoErrorModel.message = apiError.message;
-        repoErrorModel.status = apiError.status;
+        repoErrorModel.message = errorResult.message;
+        repoErrorModel.status = errorResult.status;
 
         return repoErrorModel;
     }
@@ -95,7 +94,7 @@ public class BreedMapperImpl implements BreedMapper
         return breedModelList;
     }
 
-    private boolean validateImageResult(ImageResult imageResult) {
+    public boolean validateImageResult(ImageResult imageResult) {
         if (
               imageResult != null &&
               imageResult.status != null &&
@@ -147,9 +146,6 @@ public class BreedMapperImpl implements BreedMapper
 
             case "mexicanhairless":
                 return "Mexican Hairless";
-
-            case "australian/shepherd":
-                return "shepherd/australian";
 
             case "Shepherd Australian":
                 return "Australian Shepherd";

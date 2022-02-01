@@ -37,7 +37,9 @@ public class BreedAdapter extends RecyclerView.Adapter<BreedAdapter.ViewHolder>
         holder.nameText.setVisibility(View.GONE);
         BreedModel breedModel = mBreedModels.get(position);
         holder.imageView.setContentDescription(breedModel.displayName);
-        Picasso.get().load(breedModel.imageUrl).into(holder.imageView, new Callback() {
+        Picasso picasso = Picasso.get();
+        picasso.setIndicatorsEnabled(true);
+        picasso.load(breedModel.imageUrl).into(holder.imageView, new Callback() {
             @Override
             public void onSuccess() {
                 holder.progressBar.setVisibility(View.GONE);

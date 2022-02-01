@@ -3,7 +3,7 @@ package co.touchlab.dogify.data.retrofit;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 
-import co.touchlab.dogify.data.entities.ApiError;
+import co.touchlab.dogify.data.entities.ErrorResult;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 import retrofit2.Response;
@@ -16,16 +16,16 @@ public class ApiErrorUtil {
         this.retrofit = retrofit;
     }
 
-    public ApiError parseError(Response<?> response) {
-        Converter<ResponseBody, ApiError> converter =
-                retrofit.responseBodyConverter(ApiError.class, new Annotation[0]);
+    public ErrorResult parseError(Response<?> response) {
+        Converter<ResponseBody, ErrorResult> converter =
+                retrofit.responseBodyConverter(ErrorResult.class, new Annotation[0]);
 
-        ApiError error;
+        ErrorResult error;
 
         try {
             error = converter.convert(response.errorBody());
         } catch (IOException | NullPointerException e) {
-            return new ApiError();
+            return new ErrorResult();
         }
 
         return error;

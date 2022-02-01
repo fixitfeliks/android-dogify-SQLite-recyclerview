@@ -4,13 +4,11 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-import co.touchlab.dogify.data.entities.ApiError;
-import co.touchlab.dogify.data.entities.ImageResult;
-import co.touchlab.dogify.data.entities.NamesResult;
+import co.touchlab.dogify.data.entities.ErrorResult;
 import co.touchlab.dogify.data.models.BreedModel;
 
 public interface DataSource {
     LiveData<List<BreedModel>> getBreedDataStream();
-    LiveData<ApiError> getErrorStream();
+    LiveData<ErrorResult> getErrorStream();
     void fetchBreedData();
 }
