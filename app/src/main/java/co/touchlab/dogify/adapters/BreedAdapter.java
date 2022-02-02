@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import co.touchlab.dogify.R;
 import co.touchlab.dogify.data.models.BreedModel;
@@ -33,7 +34,9 @@ public class BreedAdapter extends RecyclerView.Adapter<BreedAdapter.ViewHolder>
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.progressBar.setVisibility(View.VISIBLE);
+        int randomInt = ThreadLocalRandom.current().nextInt(400, 800);
+        holder.imageLoading.setHeight(randomInt);
+        holder.imageLoading.setVisibility(View.VISIBLE);
         holder.nameText.setVisibility(View.GONE);
         BreedModel breedModel = mBreedModels.get(position);
         holder.imageView.setContentDescription(breedModel.displayName);
@@ -42,7 +45,7 @@ public class BreedAdapter extends RecyclerView.Adapter<BreedAdapter.ViewHolder>
         picasso.load(breedModel.imageUrl).into(holder.imageView, new Callback() {
             @Override
             public void onSuccess() {
-                holder.progressBar.setVisibility(View.GONE);
+                holder.imageLoading.setVisibility(View.GONE);
                 holder.nameText.setVisibility(View.VISIBLE);
                 holder.nameText.setText(breedModel.displayName);
             }
@@ -67,12 +70,12 @@ public class BreedAdapter extends RecyclerView.Adapter<BreedAdapter.ViewHolder>
     static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView nameText;
         private final ImageView imageView;
-        private final ProgressBar progressBar;
+        private final TextView imageLoading;
 
         ViewHolder(View itemView) {
             super(itemView);
             nameText = itemView.findViewById(R.id.name);
-            progressBar = itemView.findViewById(R.id.image_spinner);
+            imageLoading = itemView.findViewById(R.id.image_loading);
             imageView = itemView.findViewById(R.id.image);
         }
     }
