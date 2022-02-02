@@ -10,6 +10,7 @@ import java.util.concurrent.Executors;
 import co.touchlab.dogify.data.mappers.BreedMapperImpl;
 import co.touchlab.dogify.data.models.BreedModel;
 import co.touchlab.dogify.data.models.ErrorModel;
+import co.touchlab.dogify.data.repository.datasource.LocalDataSource;
 import co.touchlab.dogify.data.repository.datasource.RemoteDataSource;
 
 public class BreedRepositoryImpl implements BreedRepository
@@ -18,10 +19,13 @@ public class BreedRepositoryImpl implements BreedRepository
     private final MediatorLiveData<List<BreedModel>> mBreedData = new MediatorLiveData<>();
 
     private final ExecutorService mExecutor;
+    private final LocalDataSource mLocalDataSource;
     private final RemoteDataSource mRemoteDataSource;
 
-    public BreedRepositoryImpl(RemoteDataSource mRemoteDataSource, BreedMapperImpl mBreedMapper) {
+
+    public BreedRepositoryImpl(RemoteDataSource mRemoteDataSource, LocalDataSource mLocalDataSource, BreedMapperImpl mBreedMapper) {
         this.mRemoteDataSource = mRemoteDataSource;
+        this.mLocalDataSource = mLocalDataSource;
         mExecutor = Executors.newCachedThreadPool();
 
         mRepoErrorData.addSource(this.mRemoteDataSource.getErrorStream(), apiError ->
@@ -33,6 +37,7 @@ public class BreedRepositoryImpl implements BreedRepository
         mBreedData.addSource(this.mRemoteDataSource.getBreedDataStream(), breedModels ->
                 mExecutor.execute(() -> {
                         mBreedData.postValue(breedModels);
+                        mLocalDataSource.storeBreedModels(breedModels);
                 })
         );
     }
@@ -50,5 +55,6 @@ public class BreedRepositoryImpl implements BreedRepository
     @Override
     public void fetchBreedData() {
         mRemoteDataSource.fetchBreedData();
+        mLocalDataSource.fetchBreedData();
     }
 }

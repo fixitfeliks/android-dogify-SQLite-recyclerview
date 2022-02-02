@@ -1,4 +1,4 @@
-package co.touchlab.dogify.data.entities;
+package co.touchlab.dogify.data.retrofit.resultmodels;
 
 public class ErrorResult
 {

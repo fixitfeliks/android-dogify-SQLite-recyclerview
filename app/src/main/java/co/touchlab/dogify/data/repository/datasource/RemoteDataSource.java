@@ -3,10 +3,8 @@ package co.touchlab.dogify.data.repository.datasource;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +14,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import co.touchlab.dogify.data.entities.ErrorResult;
-import co.touchlab.dogify.data.entities.ImageResult;
-import co.touchlab.dogify.data.entities.NamesResult;
+import co.touchlab.dogify.data.retrofit.resultmodels.ErrorResult;
+import co.touchlab.dogify.data.retrofit.resultmodels.ImageResult;
+import co.touchlab.dogify.data.retrofit.resultmodels.NamesResult;
 import co.touchlab.dogify.data.mappers.BreedMapperImpl;
 import co.touchlab.dogify.data.models.BreedModel;
 import co.touchlab.dogify.data.retrofit.ApiErrorUtil;

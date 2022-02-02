@@ -31,12 +31,12 @@ import java.util.Objects;
 
 import co.touchlab.dogify.DogTestLogger;
 import co.touchlab.dogify.MarkerInterfaces;
-import co.touchlab.dogify.data.entities.ErrorResult;
-import co.touchlab.dogify.data.entities.ImageResult;
+import co.touchlab.dogify.data.retrofit.resultmodels.ErrorResult;
+import co.touchlab.dogify.data.retrofit.resultmodels.ImageResult;
 import co.touchlab.dogify.data.models.BreedModel;
 import co.touchlab.dogify.data.repository.datasource.RemoteDataSource;
 import co.touchlab.dogify.data.retrofit.DogService;
-import co.touchlab.dogify.di.RetrofitFactory;
+import co.touchlab.dogify.data.retrofit.RetrofitFactory;
 import co.touchlab.dogify.entities.EntityFilepaths;
 import co.touchlab.dogify.utils.LiveDataTestUtil;
 import mockwebserver3.Dispatcher;
@@ -61,7 +61,7 @@ public class BreedRemoteDataSourceTest
     public void setup() throws IOException {
         mockWebServer = new MockWebServer();
         mockWebServer.start();
-        retrofit = RetrofitFactory.getRetrofit(mockWebServer.url("/").toString());
+        retrofit = RetrofitFactory.getNewRetrofit(mockWebServer.url("/").toString());
         remoteDataSource = new RemoteDataSource(retrofit, DogService.class);
     }
 

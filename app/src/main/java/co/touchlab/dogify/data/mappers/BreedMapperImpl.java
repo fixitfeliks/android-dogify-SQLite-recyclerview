@@ -7,9 +7,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import co.touchlab.dogify.data.entities.ErrorResult;
-import co.touchlab.dogify.data.entities.ImageResult;
-import co.touchlab.dogify.data.entities.NamesResult;
+import co.touchlab.dogify.data.retrofit.resultmodels.ErrorResult;
+import co.touchlab.dogify.data.retrofit.resultmodels.ImageResult;
+import co.touchlab.dogify.data.retrofit.resultmodels.NamesResult;
 import co.touchlab.dogify.data.models.BreedModel;
 import co.touchlab.dogify.data.models.ErrorModel;
 

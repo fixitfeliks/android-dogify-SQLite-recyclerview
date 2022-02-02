@@ -20,9 +20,9 @@ import java.util.List;
 
 import co.touchlab.dogify.DogTestLogger;
 import co.touchlab.dogify.MarkerInterfaces;
-import co.touchlab.dogify.data.entities.ErrorResult;
-import co.touchlab.dogify.data.entities.ImageResult;
-import co.touchlab.dogify.data.entities.NamesResult;
+import co.touchlab.dogify.data.retrofit.resultmodels.ErrorResult;
+import co.touchlab.dogify.data.retrofit.resultmodels.ImageResult;
+import co.touchlab.dogify.data.retrofit.resultmodels.NamesResult;
 import co.touchlab.dogify.data.mappers.BreedMapperImpl;
 import co.touchlab.dogify.data.models.BreedModel;
 import co.touchlab.dogify.data.models.ErrorModel;

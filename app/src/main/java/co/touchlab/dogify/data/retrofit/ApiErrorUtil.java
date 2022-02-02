@@ -3,7 +3,7 @@ package co.touchlab.dogify.data.retrofit;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 
-import co.touchlab.dogify.data.entities.ErrorResult;
+import co.touchlab.dogify.data.retrofit.resultmodels.ErrorResult;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 import retrofit2.Response;

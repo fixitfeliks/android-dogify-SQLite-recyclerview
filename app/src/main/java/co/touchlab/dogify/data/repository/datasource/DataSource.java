@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-import co.touchlab.dogify.data.entities.ErrorResult;
+import co.touchlab.dogify.data.retrofit.resultmodels.ErrorResult;
 import co.touchlab.dogify.data.models.BreedModel;
 
 public interface DataSource {

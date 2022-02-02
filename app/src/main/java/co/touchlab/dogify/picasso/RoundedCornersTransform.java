@@ -1,4 +1,4 @@
-package co.touchlab.dogify.data.picasso;
+package co.touchlab.dogify.picasso;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;

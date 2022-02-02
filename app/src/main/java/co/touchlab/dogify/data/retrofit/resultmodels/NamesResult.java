@@ -1,4 +1,4 @@
-package co.touchlab.dogify.data.entities;
+package co.touchlab.dogify.data.retrofit.resultmodels;
 
 import java.util.LinkedHashMap;
 import java.util.List;

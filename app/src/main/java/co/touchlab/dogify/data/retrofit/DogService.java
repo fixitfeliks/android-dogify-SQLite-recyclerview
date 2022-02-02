@@ -1,7 +1,7 @@
 package co.touchlab.dogify.data.retrofit;
 
-import co.touchlab.dogify.data.entities.ImageResult;
-import co.touchlab.dogify.data.entities.NamesResult;
+import co.touchlab.dogify.data.retrofit.resultmodels.ImageResult;
+import co.touchlab.dogify.data.retrofit.resultmodels.NamesResult;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
