@@ -1,4 +1,4 @@
-package co.touchlab.dogify.mapper;
+package co.touchlab.dogify.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -18,17 +18,16 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import co.touchlab.dogify.DogTestLogger;
-import co.touchlab.dogify.MarkerInterfaces;
 import co.touchlab.dogify.data.retrofit.resultmodels.ErrorResult;
 import co.touchlab.dogify.data.retrofit.resultmodels.ImageResult;
 import co.touchlab.dogify.data.retrofit.resultmodels.NamesResult;
 import co.touchlab.dogify.data.mappers.BreedMapperImpl;
 import co.touchlab.dogify.data.models.BreedModel;
 import co.touchlab.dogify.data.models.ErrorModel;
-import co.touchlab.dogify.entities.EntityFilepaths;
+import co.touchlab.dogify.test.utils.DogTestLogger;
+import co.touchlab.dogify.test.utils.EntityFilepaths;
 
-@Category(MarkerInterfaces.BreedMapperTest.class)
+@Category(BreedMapperTest.class)
 public class BreedMapperTest
 {
     @Rule
@@ -50,7 +49,7 @@ public class BreedMapperTest
     public void testMapImageUrlCallListHistorical() throws IOException {
         NamesResult namesResult = gson.fromJson(new FileReader(EntityFilepaths.FILEPATH_NAME_RESULT_SAVED_RESPONSE), NamesResult.class);
         List<String> actual = breedMapper.mapImageUrlCallList(namesResult);
-        List<String> expected = gson.fromJson(new FileReader(EntityFilepaths.FILEPATH_IMAGE_URL_CALLLIST_EXPECTED_SAVED_RESPONSE), List.class);
+        List expected = gson.fromJson(new FileReader(EntityFilepaths.FILEPATH_IMAGE_URL_CALLLIST_EXPECTED_SAVED_RESPONSE), List.class);
 
         DogTestLogger.logAssertEquals(expected.toString(), actual.toString());
         assertEquals(expected,actual);
@@ -163,10 +162,10 @@ public class BreedMapperTest
         for (ImageResult imageResult : imageResults) {
             if (breedMapper.validateImageResult(imageResult)) {
                 if (imageResult.message.equals(breedModels.get(i).imageUrl)) {
-                    System.out.println(String.format(
-                            "Checking Urls at index (%s):\nBreedMode.imageUrl:  %s\nImageResult.message: %s\n",
+                    System.out.printf(
+                            "Checking Urls at index (%s):\nBreedMode.imageUrl:  %s\nImageResult.message: %s\n%n",
                             i, breedModels.get(i).imageUrl, imageResult.message
-                    ));
+                    );
                     i++;
                 } else {
                     return false;
@@ -174,10 +173,6 @@ public class BreedMapperTest
             }
         }
 
-        if (breedModels.size() == i) {
-            return true;
-        }
-
-        return false;
+        return breedModels.size() == i;
     }
 }

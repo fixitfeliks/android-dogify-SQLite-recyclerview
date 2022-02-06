@@ -1,0 +1,5 @@
+{
+  "status": "error",
+  "message": "No route found for \"GET /api/breeds/lij]/st/all\" with code: 0",
+  "code": 404
+}

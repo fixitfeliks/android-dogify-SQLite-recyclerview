@@ -1,4 +1,4 @@
-package co.touchlab.dogify;
+package co.touchlab.dogify.test.utils;
 
 import org.junit.rules.TestRule;
 import org.junit.rules.TestWatcher;

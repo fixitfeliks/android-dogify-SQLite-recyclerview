@@ -1,4 +1,4 @@
-package co.touchlab.dogify.utils;
+package co.touchlab.dogify.test.utils;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
