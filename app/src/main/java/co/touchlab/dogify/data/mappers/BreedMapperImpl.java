@@ -66,7 +66,7 @@ public class BreedMapperImpl implements BreedMapper
         return imageUrlName;
     }
 
-    private String geListSortString(String str) {
+    public String geListSortString(String str) {
         str = urlChangeList(str);
         String breedName = str.indexOf("/") == -1 ? str : str.substring(0, str.indexOf("/"));
         String breedType = str.indexOf("/") == -1 ? "" : str.substring(str.indexOf("/") + 1);

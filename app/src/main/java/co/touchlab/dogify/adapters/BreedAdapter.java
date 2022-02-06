@@ -1,16 +1,21 @@
 package co.touchlab.dogify.adapters;
 
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -24,6 +29,11 @@ import co.touchlab.dogify.data.models.BreedModel;
 public class BreedAdapter extends RecyclerView.Adapter<BreedAdapter.ViewHolder>
 {
     private final List<BreedModel> mBreedModels = new ArrayList<>();
+    private final RequestManager mGlide;
+
+    public BreedAdapter(RequestManager glide){
+        mGlide = glide;
+    }
 
     @NotNull
     @Override
@@ -34,27 +44,30 @@ public class BreedAdapter extends RecyclerView.Adapter<BreedAdapter.ViewHolder>
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        int randomInt = ThreadLocalRandom.current().nextInt(400, 800);
+        BreedModel breedModel = mBreedModels.get(position);
+        holder.nameText.setText(breedModel.displayName);
+        holder.nameText.setVisibility(View.VISIBLE);
+        holder.imageView.setContentDescription(breedModel.displayName);
+
+        int randomInt = ThreadLocalRandom.current().nextInt(200, 400);
         holder.imageLoading.setHeight(randomInt);
         holder.imageLoading.setVisibility(View.VISIBLE);
-        holder.nameText.setVisibility(View.GONE);
-        BreedModel breedModel = mBreedModels.get(position);
+//        holder.nameText.setVisibility(View.GONE);
         holder.imageView.setContentDescription(breedModel.displayName);
-        Picasso picasso = Picasso.get();
-        picasso.setIndicatorsEnabled(true);
-        picasso.load(breedModel.imageUrl).into(holder.imageView, new Callback() {
-            @Override
-            public void onSuccess() {
-                holder.imageLoading.setVisibility(View.GONE);
-                holder.nameText.setVisibility(View.VISIBLE);
-                holder.nameText.setText(breedModel.displayName);
-            }
+        Glide.with(holder.imageView.getContext()).load(breedModel.imageUrl).fitCenter()
+                .listener(new RequestListener<Drawable>(){
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        return false;
+                    }
 
-            @Override
-            public void onError(Exception e) {
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        holder.imageLoading.setVisibility(View.GONE);
+                        return false;
+                    }
 
-            }
-        });
+                }).into(holder.imageView);
     }
 
     @Override

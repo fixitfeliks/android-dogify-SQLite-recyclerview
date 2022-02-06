@@ -7,12 +7,14 @@ import androidx.room.Query;
 
 import java.util.List;
 
+import co.touchlab.dogify.data.models.BreedModel;
+
 @Dao
 public interface BreedDao
 {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertBreeds(List<BreedModelEntity> breeds);
+    void insertBreeds(List<BreedModel> breeds) throws Exception;
 
     @Query("SELECT * FROM breeds")
-    List<BreedModelEntity> getAllBreeds();
+    List<BreedModel> getAllBreeds() throws Exception;
 }

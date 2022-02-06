@@ -30,4 +30,11 @@ public class ApiErrorUtil {
 
         return error;
     }
+
+    public static ErrorResult postErrorResult(String status, String message) {
+        ErrorResult errorResult = new ErrorResult();
+        errorResult.status = status;
+        errorResult.message = message;
+        return errorResult;
+    }
 }

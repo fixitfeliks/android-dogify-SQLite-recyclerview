@@ -4,4 +4,5 @@ public class ErrorResult
 {
     public String status;
     public String message;
+    public int code;
 }
