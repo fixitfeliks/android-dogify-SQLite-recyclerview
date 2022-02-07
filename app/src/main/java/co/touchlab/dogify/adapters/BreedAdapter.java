@@ -50,25 +50,13 @@ public class BreedAdapter extends RecyclerView.Adapter<BreedAdapter.ViewHolder>
         holder.imageView.setContentDescription(breedModel.displayName);
 
         int randomInt = ThreadLocalRandom.current().nextInt(200, 400);
-        holder.imageLoading.setHeight(randomInt);
-        holder.imageLoading.setVisibility(View.VISIBLE);
         holder.imageView.setContentDescription(breedModel.displayName);
         mGlide.load(breedModel.imageUrl)
             .fitCenter()
+            .placeholder(R.drawable.image_placeholder)
+            .error(R.drawable.no_image_loaded)
             .transform(new RoundedCorners(25))
-            .listener(new RequestListener<Drawable>(){
-                @Override
-                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                    return false;
-                }
-
-                @Override
-                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                    holder.imageLoading.setVisibility(View.GONE);
-                    return false;
-                }
-
-            }).into(holder.imageView);
+            .into(holder.imageView);
     }
 
     @Override
@@ -84,12 +72,10 @@ public class BreedAdapter extends RecyclerView.Adapter<BreedAdapter.ViewHolder>
     static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView nameText;
         private final ImageView imageView;
-        private final TextView imageLoading;
 
         ViewHolder(View itemView) {
             super(itemView);
             nameText = itemView.findViewById(R.id.name);
-            imageLoading = itemView.findViewById(R.id.image_loading);
             imageView = itemView.findViewById(R.id.image);
         }
     }

@@ -1,5 +1,7 @@
 package co.touchlab.dogify.data.repository.datasource;
 
+import android.app.ActionBar;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -135,15 +137,18 @@ public class RemoteBreedDataSource implements DataSource {
     }
 
     public void fetchAndCacheImages(List<BreedModel> breedModels) {
-        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        final int serviceStartDelay = 500;
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
+        long startTime = System.currentTimeMillis();
+
         scheduler.schedule(() -> {
             for (BreedModel breedModel : breedModels) {
-                mGlide
-                        .asBitmap()
+                mGlide.asBitmap()
+                        .override(ActionBar.LayoutParams.MATCH_PARENT)
                         .load(breedModel.imageUrl)
                         .submit();
             }
-        },2, TimeUnit.SECONDS);
+        },serviceStartDelay, TimeUnit.MILLISECONDS);
 
         scheduler.shutdown();
     }
