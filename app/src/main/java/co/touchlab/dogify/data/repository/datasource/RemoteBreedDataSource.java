@@ -137,19 +137,26 @@ public class RemoteBreedDataSource implements DataSource {
     }
 
     public void fetchAndCacheImages(List<BreedModel> breedModels) {
-        final int serviceStartDelay = 500;
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
-        long startTime = System.currentTimeMillis();
-
+        final int serviceStartDelay = 200;
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(4);
         scheduler.schedule(() -> {
             for (BreedModel breedModel : breedModels) {
-                mGlide.asBitmap()
-                        .override(ActionBar.LayoutParams.MATCH_PARENT)
-                        .load(breedModel.imageUrl)
-                        .submit();
+                try {
+                    mGlide.asBitmap()
+                            .override(ActionBar.LayoutParams.MATCH_PARENT)
+                            .load(breedModel.imageUrl)
+                            .submit()
+                            .get();
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                    ErrorResult errorResult = new ErrorResult();
+                    errorResult.code = 0;
+                    errorResult.status = "error";
+                    errorResult.message = "Could not cache " + breedModel.displayName + " image";
+                    mApiError.postValue(errorResult);
+                }
             }
         },serviceStartDelay, TimeUnit.MILLISECONDS);
-
         scheduler.shutdown();
     }
 }
